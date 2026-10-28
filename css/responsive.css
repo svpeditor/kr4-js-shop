@@ -12,10 +12,11 @@
 600px  - карточки товаров, преимущества и подвал в две колонки,
          таблица комплектаций снова обычная таблица;
 768px  - фото товара рядом с описанием, поля формы по два в строке,
-         контакты и способы оплаты в три колонки;
+         контакты и способы оплаты в три колонки, товар в корзине в одну строку,
+         фото и описание в окне товара рядом;
 900px  - приветственный блок в две колонки, отзывы в три;
 1024px - меню в одну строку вместо кнопки "Меню", карточки в 3-4 колонки,
-         боковые блоки на страницах товара и заявки встают справа;
+         боковые блоки на страницах товара, заявки и корзины встают справа;
 1200px - панель поиска и фильтров каталога слева от товаров и прилипает при прокрутке.
 
 Проверенные ширины: 360px, 430px, 768px, 1024px, 1440px.
@@ -170,6 +171,33 @@ body {
         padding: 12px 20px 20px;
     }
 
+    /*
+    Товар в корзине в одну строку: фото, название, количество, сумма, "Удалить".
+    */
+    .cart-item {
+        grid-template-columns: 96px minmax(0, 1fr) auto 110px auto;
+    }
+
+    .cart-item__image {
+        grid-row: auto;
+    }
+
+    .cart-item__sum {
+        text-align: right;
+    }
+
+    .cart-item__remove {
+        grid-column: auto;
+    }
+
+    /*
+    В окне товара фото слева, описание справа.
+    */
+    .product-modal__inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-lg);
+    }
+
     .to-top {
         right: var(--space-xl);
         bottom: var(--space-xl);
@@ -200,17 +228,27 @@ body {
 
 @media (min-width: 1024px) {
     /*
-    Все 7 пунктов меню помещаются в одну строку с логотипом,
-    поэтому кнопка "Меню" больше не нужна.
+    Все 7 пунктов меню помещаются в одну строку с логотипом и корзиной,
+    поэтому кнопка "Меню" больше не нужна. Чтобы на 1024px строка не переносилась,
+    отступы здесь меньше, с 1200px они снова как были (см. ниже).
     */
     .site-header__inner {
         flex-wrap: nowrap;
-        gap: var(--space-lg);
+        gap: var(--space-md);
         padding: var(--space-xs) 20px;
     }
 
     .site-header__toggle {
         display: none;
+    }
+
+    /*
+    Корзина справа от меню: order ставит её после nav, хотя в разметке она раньше.
+    */
+    .site-header__cart {
+        order: 1;
+        margin-left: 0;
+        padding: var(--space-sm);
     }
 
     .site-nav {
@@ -230,7 +268,7 @@ body {
 
     .site-nav__link {
         display: inline-block;
-        padding: var(--space-sm) 12px;
+        padding: var(--space-sm);
         white-space: nowrap;
     }
 
@@ -254,14 +292,16 @@ body {
     }
 
     .product-details,
-    .order {
+    .order,
+    .cart {
         grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     }
 
     /*
-    Блок "Как проходит заказ" прилипает под шапкой, пока заполняется форма.
+    Блок "Как проходит заказ" и итог корзины прилипают под шапкой при прокрутке.
     */
-    .order__aside {
+    .order__aside,
+    .cart__aside {
         position: sticky;
         top: calc(var(--header-height) + var(--space-md));
     }
@@ -272,6 +312,14 @@ body {
 =============================== */
 
 @media (min-width: 1200px) {
+    .site-header__inner {
+        gap: var(--space-lg);
+    }
+
+    .site-nav__link {
+        padding: var(--space-sm) 12px;
+    }
+
     /*
     Панель поиска и фильтров слева шириной 260px, товары занимают остальное место.
     */

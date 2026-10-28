@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/cart.js" defer></script>
+    <script src="js/modal.js" defer></script>
     <script src="js/validation.js" defer></script>
 </head>
 <body>
@@ -21,6 +23,8 @@
     <header class="site-header" id="top">
         <div class="site-header__inner">
             <a class="site-header__logo" href="index.html">Клац</a>
+
+            <a class="site-header__cart" href="cart.html">Корзина <span class="site-header__cart-count">0</span></a>
 
             <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true">&#9776;</span> Меню</button>
 
@@ -149,7 +153,7 @@
                         <p class="product-card__category">Клавиатура TKL</p>
                         <h3 class="product-card__title"><a class="product-card__link" href="product.html">Клац TKL Graphite</a></h3>
                         <p class="product-card__description">Без цифрового блока, тёмный корпус и тактильные свитчи Kailh Box Brown.</p>
-                        <p class="product-card__price">7 990 ₽ <s class="product-card__old-price">9 490 ₽</s></p>
+                        <p class="product-card__price">7 990 ₽ <s class="product-card__old-price">9 400 ₽</s></p>
                         <div class="product-card__actions">
                             <a class="button button--secondary button--small" href="product.html">Подробнее</a>
                             <button class="button button--primary button--small product-card__button" type="button" data-product="Клац TKL Graphite">Заказать</button>
@@ -352,6 +356,7 @@
                     <option value="consultation">Консультация</option>
                     <option value="delivery">Доставка</option>
                 </select>
+                <p class="form-error" id="order-topic-error"></p>
             </div>
 
             <div class="order-form__field">
@@ -375,6 +380,7 @@
                     >
                     Я согласен на обработку персональных данных <span class="order-form__required" aria-hidden="true">*</span>
                 </label>
+                <p class="form-error" id="order-agreement-error"></p>
             </div>
 
             <div class="order-form__actions">

@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/cart.js" defer></script>
     <script src="js/catalog.js" defer></script>
+    <script src="js/modal.js" defer></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к основному содержимому</a>
@@ -21,6 +23,8 @@
     <header class="site-header" id="top">
         <div class="site-header__inner">
             <a class="site-header__logo" href="index.html">Клац</a>
+
+            <a class="site-header__cart" href="cart.html">Корзина <span class="site-header__cart-count">0</span></a>
 
             <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true">&#9776;</span> Меню</button>
 
@@ -85,10 +89,18 @@
                         <option value="title-asc">По названию А-Я</option>
                     </select>
                 </div>
+
+                <label class="catalog-controls__check">
+                    <input id="only-available" type="checkbox">
+                    Только в наличии
+                </label>
+
+                <button class="button button--secondary button--small" type="button" data-action="reset-filters">Сбросить</button>
             </section>
 
             <div class="catalog-layout__products">
                 <p class="catalog-count" aria-live="polite"></p>
+                <p class="catalog-message" aria-live="polite"></p>
                 <p class="catalog-empty" hidden>По выбранным условиям товары не найдены.</p>
                 <!-- Карточки товаров добавляет js/catalog.js -->
                 <div class="products-grid" data-products-container></div>
@@ -135,6 +147,30 @@
 
         <p class="site-footer__copy">&copy; 2026 Клац. Климашевский Даниил, ЭФБО-07-25.</p>
     </footer>
+
+    <!-- Окно с подробностями о товаре, заполняет js/modal.js -->
+    <dialog class="product-modal" id="product-modal" aria-labelledby="product-modal-title">
+        <div class="product-modal__inner">
+            <img class="product-modal__image" src="images/klac-60.jpg" alt="" width="800" height="600">
+
+            <div class="product-modal__info">
+                <p class="product-modal__category"></p>
+                <h2 class="product-modal__title" id="product-modal-title">Товар</h2>
+                <p class="product-modal__description"></p>
+                <p class="product-modal__rating"></p>
+                <p class="product-modal__price"></p>
+                <p class="product-modal__discount" hidden></p>
+                <p class="product-modal__status"></p>
+
+                <div class="product-modal__actions">
+                    <button class="button button--primary" type="button" data-action="add-to-cart">В корзину</button>
+                    <button class="button button--secondary" type="button" data-action="close-modal">Закрыть</button>
+                </div>
+
+                <p class="product-modal__message" aria-live="polite"></p>
+            </div>
+        </div>
+    </dialog>
 
     <a class="to-top" href="#top">Наверх</a>
 </body>

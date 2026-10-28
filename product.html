@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/cart.js" defer></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к основному содержимому</a>
@@ -20,6 +21,8 @@
     <header class="site-header" id="top">
         <div class="site-header__inner">
             <a class="site-header__logo" href="index.html">Клац</a>
+
+            <a class="site-header__cart" href="cart.html">Корзина <span class="site-header__cart-count">0</span></a>
 
             <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true">&#9776;</span> Меню</button>
 
@@ -42,7 +45,7 @@
             <ol class="breadcrumbs__list">
                 <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="index.html">Главная</a></li>
                 <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="catalog.html">Каталог</a></li>
-                <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="catalog.html#keyboards">Клавиатуры</a></li>
+                <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="catalog.html?category=keyboards">Клавиатуры</a></li>
                 <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">Клац 60</span></li>
             </ol>
         </nav>
@@ -79,8 +82,10 @@
                 </ul>
                 <div class="product__actions">
                     <a class="button button--primary" href="order.html?product=klac-60">Оформить заявку</a>
+                    <button class="button button--secondary" type="button" data-action="add-to-cart" data-product-id="1">В корзину</button>
                     <a class="button button--secondary" href="catalog.html">Вернуться в каталог</a>
                 </div>
+                <p class="product__message" aria-live="polite"></p>
             </div>
         </section>
 
@@ -178,7 +183,7 @@
         <section class="section" id="similar">
             <div class="section__header">
                 <h2 class="section__title">Похожие товары</h2>
-                <a class="section__link" href="catalog.html#keyboards">Все клавиатуры</a>
+                <a class="section__link" href="catalog.html?category=keyboards">Все клавиатуры</a>
             </div>
             <div class="products-grid">
                 <article class="product-card">
@@ -209,7 +214,7 @@
                         <p class="product-card__category">Клавиатура TKL</p>
                         <h3 class="product-card__title"><a class="product-card__link" href="product.html">Клац TKL Graphite</a></h3>
                         <p class="product-card__description">Без цифрового блока, тёмный корпус и тактильные свитчи Kailh Box Brown.</p>
-                        <p class="product-card__price">7 990 ₽ <s class="product-card__old-price">9 490 ₽</s></p>
+                        <p class="product-card__price">7 990 ₽ <s class="product-card__old-price">9 400 ₽</s></p>
                         <div class="product-card__actions">
                             <a class="button button--secondary button--small" href="product.html">Подробнее</a>
                             <a class="button button--primary button--small" href="order.html?product=klac-tkl-graphite">Заказать</a>

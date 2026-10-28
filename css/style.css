@@ -490,13 +490,6 @@ flex-wrap: если заголовок длинный, ссылка "Весь к
     flex-shrink: 0;
 }
 
-.success-message {
-    margin: 0 0 var(--space-md);
-    padding: var(--space-md);
-    background-color: var(--color-success-bg);
-    border-left: 4px solid var(--color-success);
-}
-
 /*
 Учебный блок "Проверка JavaScript" внизу главной страницы.
 В pre выводится результат функций из js/main.js.
@@ -874,6 +867,36 @@ min-height: 44px - поле удобно нажимать пальцем на т
     font-weight: bold;
 }
 
+/*
+Классы добавляет js/validation.js: красный текст при ошибке, зелёный при успехе.
+*/
+.form-message--error {
+    color: var(--color-danger);
+}
+
+.form-message--success {
+    color: var(--color-success);
+}
+
+/*
+Ошибка у группы радиокнопок и у флажка согласия.
+*/
+.order-form__options[aria-invalid="true"] .order-form__option {
+    border-color: var(--color-danger);
+}
+
+/*
+Ошибка способа получения стоит сразу под кнопками выбора,
+отрицательный отступ съедает часть нижнего отступа fieldset.
+*/
+.order-form__options + .form-error {
+    margin: -12px 0 var(--space-md);
+}
+
+.order-form__checkbox input[aria-invalid="true"] {
+    outline: 2px solid var(--color-danger);
+}
+
 .order-form__checkbox {
     display: flex;
     align-items: flex-start;
@@ -1146,6 +1169,14 @@ min-height: 44px - поле удобно нажимать пальцем на т
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
+}
+
+/*
+Сообщение после кнопки "В корзину", текст пишет js/cart.js.
+*/
+.product__message {
+    margin: 12px 0 0;
+    color: var(--color-success);
 }
 
 /*
@@ -1426,4 +1457,332 @@ min-height: 44px - поле удобно нажимать пальцем на т
 .payment__text {
     margin: 0;
     color: var(--color-muted);
+}
+
+/* ===============================
+13. Корзина, окно товара и сообщения (КР №4)
+=============================== */
+
+/*
+Ссылка на корзину в шапке. На телефоне стоит рядом с кнопкой "Меню",
+поэтому корзина видна без открытия меню. Число обновляет js/cart.js.
+*/
+.site-header__cart {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: var(--space-sm) 12px;
+    color: var(--color-primary);
+    white-space: nowrap;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+}
+
+.site-header__cart:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+}
+
+.site-header__cart[aria-current="page"] {
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.site-header__cart-count {
+    min-width: 24px;
+    padding: 0 6px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border-radius: 12px;
+}
+
+.product-card__rating {
+    margin: 0;
+    font-size: 14px;
+}
+
+/*
+Флажок "Только в наличии" и кнопка "Сбросить" в панели каталога.
+*/
+.catalog-controls__check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.catalog-message {
+    margin: 0 0 12px;
+    color: var(--color-success);
+}
+
+/*
+Окно товара в каталоге. Отступы заданы внутреннему блоку, а не самому dialog,
+чтобы клик по затемнённому фону можно было отличить от клика по окну.
+*/
+.product-modal {
+    width: min(100% - 32px, 760px);
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-lg);
+}
+
+.product-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.product-modal__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    padding: var(--space-lg);
+}
+
+.product-modal__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+.product-modal__category {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.product-modal__title {
+    margin: var(--space-xs) 0 var(--space-sm);
+}
+
+.product-modal__description,
+.product-modal__rating,
+.product-modal__discount {
+    margin: 0 0 var(--space-sm);
+}
+
+.product-modal__discount {
+    color: var(--color-danger);
+}
+
+.product-modal__price {
+    margin: 0 0 var(--space-xs);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.product-modal__status {
+    margin: 0 0 var(--space-md);
+    color: var(--color-success);
+}
+
+.product-modal__status--none {
+    color: var(--color-danger);
+}
+
+.product-modal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.product-modal__message {
+    margin: 12px 0 0;
+    color: var(--color-success);
+}
+
+/*
+Страница корзины. На телефоне список и итог друг под другом,
+с 1024px итог справа (см. responsive.css).
+*/
+.cart {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.cart-empty {
+    margin: 0;
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+}
+
+.cart-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/*
+Товар в корзине. На телефоне картинка слева, остальное справа в столбик,
+с 768px всё в одну строку (см. responsive.css).
+*/
+.cart-item {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px var(--space-md);
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.cart-item__image {
+    grid-row: span 4;
+    align-self: start;
+    width: 96px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+}
+
+.cart-item__title {
+    margin: 0 0 var(--space-xs);
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.cart-item__price {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.cart-item__counter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.cart-item__count-button {
+    width: 36px;
+    height: 36px;
+    font: inherit;
+    font-weight: bold;
+    color: var(--color-primary);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.cart-item__count-button:hover {
+    background-color: var(--color-surface-accent);
+}
+
+.cart-item__count {
+    min-width: 24px;
+    text-align: center;
+}
+
+.cart-item__sum {
+    margin: 0;
+    font-weight: bold;
+}
+
+.cart-item__remove {
+    grid-column: 2;
+    justify-self: start;
+}
+
+.cart-summary__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-sm) var(--space-md);
+    margin: 0 0 var(--space-md);
+}
+
+.cart-summary__list dd {
+    margin: 0;
+    text-align: right;
+}
+
+.cart-summary__total {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.promo-form {
+    margin-bottom: var(--space-md);
+}
+
+.promo-form__label {
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+
+.promo-form__row {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.promo-form__input {
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-sm) 10px;
+    font: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.promo-form__input:hover {
+    border-color: var(--color-primary);
+}
+
+.promo-form__message {
+    margin: var(--space-xs) 0 0;
+    font-size: 14px;
+    color: var(--color-success);
+}
+
+.promo-form__message--error {
+    color: var(--color-danger);
+}
+
+.cart-summary__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+/*
+Товары из корзины на странице заявки.
+*/
+.order-cart {
+    margin-bottom: var(--space-md);
+    padding: 12px var(--space-md);
+    background-color: var(--color-surface-accent);
+    border-radius: var(--radius-md);
+}
+
+.order-cart__title {
+    margin: 0 0 var(--space-xs);
+    font-weight: bold;
+}
+
+.order-cart__list {
+    margin: 0 0 var(--space-xs);
+    padding-left: 20px;
+}
+
+.order-cart__total {
+    margin: 0;
+    font-weight: bold;
 }

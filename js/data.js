@@ -1,5 +1,7 @@
 // Товары магазина Клац. Каждый товар - объект с одинаковым набором свойств.
 // Значения category совпадают с value в фильтре категорий на catalog.html.
+// price - цена без скидки, discountPercent - скидка в процентах (0, если скидки нет),
+// badge - надпись на карточке ("Хит", "Новинка" или пустая строка).
 const products = [
     {
         id: 1,
@@ -10,7 +12,8 @@ const products = [
         rating: 4.8,
         isAvailable: true,
         image: 'images/klac-60.jpg',
-        description: 'Компактная клавиатура на 61 клавишу со свитчами Gateron Yellow.'
+        description: 'Компактная клавиатура на 61 клавишу со свитчами Gateron Yellow.',
+        badge: 'Хит'
     },
     {
         id: 2,
@@ -21,7 +24,8 @@ const products = [
         rating: 4.9,
         isAvailable: true,
         image: 'images/klac-65-wood.jpg',
-        description: 'Корпус из ореха, отдельные стрелки и кейкапы Кемпинг в комплекте.'
+        description: 'Корпус из ореха, отдельные стрелки и кейкапы Кемпинг в комплекте.',
+        badge: 'Новинка'
     },
     {
         id: 3,
@@ -32,7 +36,8 @@ const products = [
         rating: 4.7,
         isAvailable: true,
         image: 'images/klac-tkl-graphite.jpg',
-        description: 'Без цифрового блока, тёмный корпус и тактильные свитчи Kailh Box Brown.'
+        description: 'Без цифрового блока, тёмный корпус и тактильные свитчи Kailh Box Brown.',
+        badge: ''
     },
     {
         id: 4,
@@ -43,7 +48,8 @@ const products = [
         rating: 4.6,
         isAvailable: true,
         image: 'images/klac-tkl-retro.jpg',
-        description: 'Оранжевые и кремовые кейкапы в стиле старых компьютеров, линейные свитчи.'
+        description: 'Оранжевые и кремовые кейкапы в стиле старых компьютеров, линейные свитчи.',
+        badge: ''
     },
     {
         id: 5,
@@ -54,7 +60,8 @@ const products = [
         rating: 4.5,
         isAvailable: true,
         image: 'images/switches-mx-green.jpg',
-        description: 'Тактильные свитчи со щелчком и усилием нажатия 80 г.'
+        description: 'Тактильные свитчи со щелчком и усилием нажатия 80 г.',
+        badge: ''
     },
     {
         id: 6,
@@ -65,7 +72,8 @@ const products = [
         rating: 4.8,
         isAvailable: true,
         image: 'images/switch-tester.jpg',
-        description: 'Шесть популярных свитчей на подставке, чтобы выбрать свой ход клавиш.'
+        description: 'Шесть популярных свитчей на подставке, чтобы выбрать свой ход клавиш.',
+        badge: 'Новинка'
     },
     {
         id: 7,
@@ -76,7 +84,8 @@ const products = [
         rating: 4.4,
         isAvailable: true,
         image: 'images/keycaps-orange.jpg',
-        description: 'Яркий набор из PBT-пластика для полноразмерных и TKL-клавиатур.'
+        description: 'Яркий набор из PBT-пластика для полноразмерных и TKL-клавиатур.',
+        badge: ''
     },
     {
         id: 8,
@@ -87,7 +96,8 @@ const products = [
         rating: 4.7,
         isAvailable: true,
         image: 'images/keycaps-camp.jpg',
-        description: 'Зелёные, бордовые и кремовые кейкапы с рисунками гор и палаток.'
+        description: 'Зелёные, бордовые и кремовые кейкапы с рисунками гор и палаток.',
+        badge: ''
     },
     {
         id: 9,
@@ -98,7 +108,8 @@ const products = [
         rating: 4.3,
         isAvailable: true,
         image: 'images/keycap-puller.jpg',
-        description: 'Проволочный съёмник, чтобы снять кейкапы и не поцарапать корпус.'
+        description: 'Проволочный съёмник, чтобы снять кейкапы и не поцарапать корпус.',
+        badge: ''
     },
     {
         id: 10,
@@ -109,6 +120,15 @@ const products = [
         rating: 4.6,
         isAvailable: false,
         image: 'images/cable-coiled.jpg',
-        description: 'Кабель 1,5 м с пружиной и разъёмом-авиатором. Ждём новую поставку.'
+        description: 'Кабель 1,5 м с пружиной и разъёмом-авиатором. Ждём новую поставку.',
+        badge: ''
     }
 ];
+
+// Названия категорий для карточек и окна товара.
+const categoryNames = {
+    keyboards: 'Клавиатуры',
+    switches: 'Свитчи',
+    keycaps: 'Кейкапы',
+    accessories: 'Аксессуары'
+};

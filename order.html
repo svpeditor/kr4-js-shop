@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/cart.js" defer></script>
     <script src="js/validation.js" defer></script>
 </head>
 <body>
@@ -21,6 +22,8 @@
     <header class="site-header" id="top">
         <div class="site-header__inner">
             <a class="site-header__logo" href="index.html">Клац</a>
+
+            <a class="site-header__cart" href="cart.html">Корзина <span class="site-header__cart-count">0</span></a>
 
             <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true">&#9776;</span> Меню</button>
 
@@ -111,6 +114,13 @@
                     <fieldset class="order-form__group">
                         <legend class="order-form__legend">Заказ</legend>
 
+                        <!-- Товары из корзины, список заполняет js/cart.js. Если корзина пустая, блок скрыт. -->
+                        <div class="order-cart" hidden>
+                            <p class="order-cart__title">Товары из корзины</p>
+                            <ul class="order-cart__list"></ul>
+                            <p class="order-cart__total"></p>
+                        </div>
+
                         <div class="order-form__row">
                             <div class="order-form__field">
                                 <label class="order-form__label" for="order-product">Товар <span class="order-form__required" aria-hidden="true">*</span></label>
@@ -125,7 +135,7 @@
                                     <optgroup label="Свитчи и кейкапы">
                                         <option value="switches-mx-green">Свитчи Cherry MX Green, 1 190 ₽</option>
                                         <option value="switch-tester">Тестер свитчей, 790 ₽</option>
-                                        <option value="keycaps-orange">Кейкапы Orange, 2 990 ₽</option>
+                                        <option value="keycaps-orange">Кейкапы Orange, 2 970 ₽</option>
                                         <option value="keycaps-camp">Кейкапы Кемпинг, 4 490 ₽</option>
                                     </optgroup>
                                     <optgroup label="Аксессуары">
@@ -134,6 +144,8 @@
                                     </optgroup>
                                     <option value="consultation">Нужна консультация</option>
                                 </select>
+                                <small class="order-form__hint">Можно не выбирать, если товары уже в корзине.</small>
+                                <p class="form-error" id="order-product-error"></p>
                             </div>
 
                             <div class="order-form__field">
@@ -148,6 +160,7 @@
                                     value="1"
                                     required
                                 >
+                                <p class="form-error" id="order-quantity-error"></p>
                             </div>
                         </div>
 
@@ -157,6 +170,7 @@
                             <label class="order-form__option"><input type="radio" name="delivery" value="courier"> Курьер по Москве</label>
                             <label class="order-form__option"><input type="radio" name="delivery" value="point"> Пункт выдачи</label>
                         </fieldset>
+                        <p class="form-error" id="order-delivery-error"></p>
 
                         <div class="order-form__field">
                             <label class="order-form__label" for="order-date">Желаемая дата получения</label>
@@ -190,6 +204,7 @@
                             >
                             Я согласен на обработку персональных данных <span class="order-form__required" aria-hidden="true">*</span>
                         </label>
+                        <p class="form-error" id="order-agreement-error"></p>
                     </div>
 
                     <div class="order-form__actions">

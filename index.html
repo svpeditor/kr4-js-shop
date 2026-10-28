@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/validation.js" defer></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к основному содержимому</a>
@@ -100,10 +101,6 @@
                 <h2 class="section__title">Популярные товары</h2>
                 <a class="section__link" href="catalog.html">Весь каталог</a>
             </div>
-
-            <p class="success-message" id="success-message" hidden>
-                Заявка отправлена! Мы перезвоним в течение 15 минут в рабочее время.
-            </p>
 
             <div class="products-grid products-grid--wide">
                 <article class="product-card">
@@ -302,6 +299,7 @@
                     autocomplete="given-name"
                     required
                 >
+                <p class="form-error" id="order-name-error"></p>
             </div>
 
             <div class="order-form__field">
@@ -315,6 +313,7 @@
                     autocomplete="email"
                     required
                 >
+                <p class="form-error" id="order-email-error"></p>
             </div>
 
             <div class="order-form__field">
@@ -332,6 +331,7 @@
                     required
                 >
                 <small class="order-form__hint" id="order-phone-hint">Формат: +7 (900) 000-00-00</small>
+                <p class="form-error" id="order-phone-error"></p>
             </div>
 
             <div class="order-form__field">
@@ -381,6 +381,8 @@
                 <button class="button button--secondary" type="button" id="close-order-dialog">Закрыть</button>
                 <button class="button button--primary" type="submit">Отправить заявку</button>
             </div>
+
+            <p class="form-message" aria-live="polite"></p>
         </form>
     </dialog>
 

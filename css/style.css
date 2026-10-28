@@ -633,6 +633,19 @@ overflow-wrap: anywhere переносит длинные слова,
 }
 
 /*
+Наличие товара в карточке каталога (карточки создаёт js/catalog.js).
+*/
+.product-card__status {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-success);
+}
+
+.product-card__button {
+    align-self: flex-start;
+}
+
+/*
 Модификаторы карточки: товар со скидкой и товар, которого нет в наличии.
 */
 .product-card--discount .product-card__price {
@@ -641,6 +654,10 @@ overflow-wrap: anywhere переносит длинные слова,
 
 .product-card--unavailable .product-card__image {
     opacity: 0.5;
+}
+
+.product-card--unavailable .product-card__status {
+    color: var(--color-danger);
 }
 
 /* ===============================
@@ -827,7 +844,7 @@ min-height: 44px - поле удобно нажимать пальцем на т
 }
 
 /*
-Подсветка ошибочных полей, aria-invalid добавляется в js/main.js.
+Подсветка ошибочных полей, aria-invalid добавляется из JavaScript при проверке формы.
 */
 .order-form__input[aria-invalid="true"],
 .order-form__select[aria-invalid="true"],
@@ -840,6 +857,21 @@ min-height: 44px - поле удобно нажимать пальцем на т
     margin-top: var(--space-xs);
     font-size: 14px;
     color: var(--color-muted);
+}
+
+/*
+Текст ошибки под полем и общее сообщение под кнопками.
+Текст в них записывает js/validation.js.
+*/
+.form-error {
+    margin: var(--space-xs) 0 0;
+    font-size: 14px;
+    color: var(--color-danger);
+}
+
+.form-message {
+    margin: var(--space-md) 0 0;
+    font-weight: bold;
 }
 
 .order-form__checkbox {
@@ -947,37 +979,6 @@ min-height: 44px - поле удобно нажимать пальцем на т
     margin-left: var(--space-sm);
 }
 
-.categories {
-    max-width: var(--container-width);
-    margin: 0 auto var(--space-lg);
-}
-
-.categories__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.categories__link {
-    display: inline-block;
-    padding: var(--space-sm) 12px;
-    text-decoration: none;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-}
-
-.categories__link:hover {
-    background-color: var(--color-surface-accent);
-    border-color: var(--color-primary);
-}
-
-.categories__count {
-    color: var(--color-muted);
-}
-
 /*
 Каталог через Grid. На телефоне одна колонка: сначала фильтры,
 потом товары. С 1200px фильтры встают слева (см. responsive.css).
@@ -1011,102 +1012,61 @@ min-height: 44px - поле удобно нажимать пальцем на т
     margin: 0 0 12px;
 }
 
-.catalog-filters {
+/*
+Панель поиска, фильтра категории и сортировки.
+На телефоне она над карточками, с 1200px слева (см. responsive.css).
+*/
+.catalog-controls {
     padding: var(--space-md);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    accent-color: var(--color-primary);
 }
 
-/*
-На телефоне фильтры свёрнуты, чтобы товары не уезжали вниз.
-Кнопка "Показать фильтры" добавляет класс catalog-filters--open (js/main.js).
-*/
-.catalog-filters__toggle {
-    width: 100%;
-    min-height: 44px;
-    padding: var(--space-sm) var(--space-md);
-    font: inherit;
-    color: var(--color-primary);
-    background-color: var(--color-white);
-    border: 1px solid var(--color-primary);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-}
-
-.catalog-filters__toggle:hover {
-    background-color: var(--color-surface-accent);
-}
-
-/*
-Форма фильтров на Grid, gap задаёт расстояние между группами полей.
-*/
-.catalog-filters__form {
-    display: none;
-    gap: var(--space-md);
-}
-
-.catalog-filters--open .catalog-filters__form {
-    display: grid;
-    margin-top: var(--space-md);
-}
-
-.catalog-filters__title {
-    margin: 0;
+.catalog-controls__title {
+    margin: 0 0 12px;
     font-size: 18px;
 }
 
-.catalog-filters__group {
-    min-width: 0;
-    margin: 0;
-    padding: var(--space-sm) 12px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+.catalog-controls__group {
+    margin-bottom: 12px;
 }
 
-.catalog-filters__legend {
-    padding: 0 var(--space-xs);
+.catalog-controls__label {
+    display: block;
+    margin-bottom: var(--space-xs);
     font-weight: bold;
 }
 
-.catalog-filters__option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 32px;
-    margin-bottom: var(--space-xs);
-    cursor: pointer;
-}
-
-.catalog-filters__price {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.catalog-filters__price-label {
-    color: var(--color-muted);
-}
-
-.catalog-filters__input {
+.catalog-controls__input,
+.catalog-controls__select {
     width: 100%;
-    min-width: 0;
-    min-height: 40px;
-    padding: 6px;
+    min-height: 44px;
+    padding: var(--space-sm) 10px;
     font: inherit;
+    background-color: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
 }
 
-.catalog-filters__input:hover {
+.catalog-controls__input:hover,
+.catalog-controls__select:hover {
     border-color: var(--color-primary);
 }
 
-.catalog-filters__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
+/*
+Сколько товаров найдено и сообщение, если ничего не найдено.
+*/
+.catalog-count {
+    margin: 0 0 12px;
+    color: var(--color-muted);
+}
+
+.catalog-empty {
+    margin: 0 0 var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
 }
 
 /* ===============================

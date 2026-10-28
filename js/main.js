@@ -3,9 +3,9 @@
 console.log('Файл main.js подключён');
 console.table(products);
 
-// Цена в виде строки, например "9400 ₽".
+// Цена в виде строки. toLocaleString('ru-RU') разделяет разряды: 9400 -> "9 400 ₽".
 function formatPrice(price) {
-    return `${price} ₽`;
+    return `${price.toLocaleString('ru-RU')} ₽`;
 }
 
 // Размер скидки в рублях.
@@ -44,41 +44,6 @@ function getAvailableProducts(products) {
     return products.filter((product) => product.isAvailable);
 }
 
-// Поиск по названию без учёта регистра и пробелов по краям.
-function searchProducts(products, query) {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    if (normalizedQuery === '') {
-        return products;
-    }
-
-    return products.filter((product) => {
-        return product.title.toLowerCase().includes(normalizedQuery);
-    });
-}
-
-// Фильтр по категории, 'all' - все товары.
-function filterProductsByCategory(products, category) {
-    if (category === 'all') {
-        return products;
-    }
-
-    return products.filter((product) => {
-        return product.category === category;
-    });
-}
-
-// Сортировка по цене. Сортируем копию, исходный массив не меняется.
-function sortProductsByPrice(products, direction = 'asc') {
-    const productsCopy = [...products];
-
-    if (direction === 'desc') {
-        return productsCopy.sort((a, b) => b.price - a.price);
-    }
-
-    return productsCopy.sort((a, b) => a.price - b.price);
-}
-
 function findProductById(products, id) {
     return products.find((product) => product.id === id);
 }
@@ -103,15 +68,6 @@ function calculateAveragePrice(products) {
     return Math.round(totalPrice / products.length);
 }
 
-// Поиск, фильтр и сортировка вместе, как будет в каталоге.
-function getPreparedProducts(products, query, category, sortDirection) {
-    let result = [...products];
-    result = searchProducts(result, query);
-    result = filterProductsByCategory(result, category);
-    result = sortProductsByPrice(result, sortDirection);
-    return result;
-}
-
 // Перебор массива циклом for по индексам и циклом for...of.
 for (let i = 0; i < products.length; i += 1) {
     console.log(`${i + 1}. ${products[i].title}`);
@@ -127,10 +83,6 @@ for (const product of products) {
 
 console.log(getProductTitles(products));
 console.table(getAvailableProducts(products));
-console.table(searchProducts(products, 'кла'));
-console.table(filterProductsByCategory(products, 'keyboards'));
-console.table(sortProductsByPrice(products, 'asc'));
-console.table(sortProductsByPrice(products, 'desc'));
 
 const selectedProduct = findProductById(products, 3);
 
@@ -144,7 +96,6 @@ if (selectedProduct) {
 console.log(calculateTotalPrice(products));
 console.log(countAvailableProducts(products));
 console.log(calculateAveragePrice(products));
-console.table(getPreparedProducts(products, 'кла', 'keyboards', 'asc'));
 
 // Краткая статистика на странице. Блок "Проверка JavaScript" есть только
 // на главной, поэтому перед записью проверяем, что элемент найден.
@@ -159,8 +110,7 @@ if (productOutputElement) {
     productOutputElement.textContent = [
         `Всего товаров: ${products.length}`,
         `Товаров в наличии: ${countAvailableProducts(products)}`,
-        `Средняя цена: ${calculateAveragePrice(products)} ₽`,
-        `Результатов поиска "кла": ${searchProducts(products, 'кла').length}`
+        `Средняя цена: ${formatPrice(calculateAveragePrice(products))}`
     ].join('\n');
 }
 
@@ -195,20 +145,6 @@ if (menuButton && siteNav) {
             siteNav.classList.remove('site-nav--open');
             menuButton.setAttribute('aria-expanded', 'false');
         }
-    });
-}
-
-// Кнопка "Показать фильтры" в каталоге. На узком экране фильтры свёрнуты,
-// с 1200px они всегда открыты, а кнопка скрыта через CSS.
-const filtersButton = document.querySelector('.catalog-filters__toggle');
-const catalogFilters = document.querySelector('.catalog-filters');
-
-if (filtersButton && catalogFilters) {
-    filtersButton.addEventListener('click', () => {
-        const isOpen = catalogFilters.classList.toggle('catalog-filters--open');
-
-        filtersButton.setAttribute('aria-expanded', isOpen);
-        filtersButton.textContent = isOpen ? 'Скрыть фильтры' : 'Показать фильтры';
     });
 }
 
@@ -265,8 +201,8 @@ if (productSelect) {
     }
 }
 
-// Проверка формы перед отправкой. Одинаково работает для формы заявки
-// (в модальном окне или на order.html) и формы обратной связи на contacts.html.
+// Проверка формы обратной связи на contacts.html (осталась из КР №3).
+// Форма заявки теперь проверяется в validation.js.
 function setupForm(form, successMessage) {
     form.addEventListener('submit', (event) => {
         // Отменяем стандартную отправку формы,
@@ -300,19 +236,7 @@ function setupForm(form, successMessage) {
 
         // Очищаем форму.
         form.reset();
-
-        // Закрываем модальное окно, если форма была в нём.
-        if (orderDialog) {
-            orderDialog.close();
-        }
     });
-}
-
-// Форма заявки и сообщение об успешной отправке.
-const orderForm = document.getElementById('order-form');
-
-if (orderForm) {
-    setupForm(orderForm, document.getElementById('success-message'));
 }
 
 // Форма обратной связи на странице контактов.

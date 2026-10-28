@@ -1,3 +1,71 @@
+// Проверка подключения. Объект product создан в data.js,
+// поэтому data.js подключается на страницах раньше main.js.
+console.log('Файл main.js подключён');
+console.log(product);
+console.table(product);
+
+// Цена в виде строки, например "9400 ₽".
+function formatPrice(price) {
+    return `${price} ₽`;
+}
+
+// Размер скидки в рублях.
+function calculateDiscount(price, discountPercent) {
+    return price * discountPercent / 100;
+}
+
+// Цена с учётом скидки.
+function calculateFinalPrice(price, discountPercent) {
+    const discountValue = calculateDiscount(price, discountPercent);
+    return price - discountValue;
+}
+
+function getProductStatus(product) {
+    if (product.isAvailable) {
+        return 'В наличии';
+    }
+
+    return 'Нет в наличии';
+}
+
+// Краткое описание товара: название, цена со скидкой и наличие.
+function createProductSummary(product) {
+    const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
+    const status = getProductStatus(product);
+    return `${product.title}: ${formatPrice(finalPrice)}. Статус: ${status}.`;
+}
+
+console.log(formatPrice(product.price));
+
+const discountValue = calculateDiscount(product.price, product.discountPercent);
+console.log(discountValue);
+
+const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
+console.log(finalPrice);
+
+console.log(getProductStatus(product));
+
+// Операторы сравнения и логические операторы.
+const hasDiscount = product.discountPercent > 0;
+const canBuy = product.price > 0 && product.isAvailable;
+console.log(`Есть скидка: ${hasDiscount}, можно купить: ${canBuy}`);
+
+const productSummary = createProductSummary(product);
+console.log(productSummary);
+
+// Вывод на страницу. Блок "Проверка JavaScript" есть только на главной,
+// поэтому перед записью проверяем, что элемент найден.
+const messageElement = document.querySelector('.js-message');
+const productOutputElement = document.querySelector('.product-output');
+
+if (messageElement) {
+    messageElement.textContent = 'JavaScript подключён корректно.';
+}
+
+if (productOutputElement) {
+    productOutputElement.textContent = productSummary;
+}
+
 // Кнопка "Меню" в шапке. На телефоне и планшете пункты меню скрыты,
 // кнопка показывает и прячет их. С 1024px кнопка скрыта через CSS.
 const menuButton = document.querySelector('.site-header__toggle');

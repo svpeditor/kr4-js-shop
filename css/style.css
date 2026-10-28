@@ -497,6 +497,19 @@ flex-wrap: если заголовок длинный, ссылка "Весь к
     border-left: 4px solid var(--color-success);
 }
 
+/*
+Учебный блок "Проверка JavaScript" внизу главной страницы.
+В pre выводится результат функций из js/main.js.
+*/
+.product-output {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    color: #f9fafb;
+    background-color: #111827;
+    border-radius: 8px;
+}
+
 /* ===============================
 6. Карточки товаров
 =============================== */

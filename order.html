@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Оформление заявки на покупку клавиатуры, свитчей или кейкапов в магазине Клац.">
+    <title>Оформление заявки | Клац</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Оформление заявки | Клац">
+    <meta property="og:description" content="Оформление заявки на покупку клавиатуры, свитчей или кейкапов в магазине Клац.">
+    <meta property="og:image" content="https://svpeditor.github.io/kr4-js-shop/images/klac-60.jpg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Перейти к основному содержимому</a>
+
+    <header class="site-header" id="top">
+        <div class="site-header__inner">
+            <a class="site-header__logo" href="index.html">Клац</a>
+
+            <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true">&#9776;</span> Меню</button>
+
+            <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+                <ul class="site-nav__list">
+                    <li class="site-nav__item"><a class="site-nav__link" href="index.html">Главная</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="catalog.html">Каталог</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="delivery.html">Доставка</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="contacts.html">Контакты</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="index.html#advantages">Преимущества</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="index.html#popular">Популярные товары</a></li>
+                    <li class="site-nav__item"><a class="site-nav__link" href="index.html#contacts">Обратная связь</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" class="main" tabindex="-1">
+        <div class="page-header">
+            <nav class="breadcrumbs" aria-label="Хлебные крошки">
+                <ol class="breadcrumbs__list">
+                    <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="index.html">Главная</a></li>
+                    <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">Оформление заявки</span></li>
+                </ol>
+            </nav>
+            <h1 class="page-header__title">Оформление заявки</h1>
+            <p class="page-header__text">Заполните форму, менеджер перезвонит и уточнит детали заказа. Оплата после подтверждения.</p>
+        </div>
+
+        <div class="order">
+            <div class="order__main">
+                <form class="order-form order__form" id="order-form" action="#" method="post" novalidate>
+                    <p class="order-form__note">Поля со звёздочкой * обязательны для заполнения.</p>
+
+                    <fieldset class="order-form__group">
+                        <legend class="order-form__legend">Контактные данные</legend>
+
+                        <div class="order-form__field">
+                            <label class="order-form__label" for="order-name">Имя <span class="order-form__required" aria-hidden="true">*</span></label>
+                            <input
+                                class="order-form__input"
+                                id="order-name"
+                                name="name"
+                                type="text"
+                                placeholder="Введите ваше имя"
+                                minlength="2"
+                                autocomplete="name"
+                                required
+                            >
+                        </div>
+
+                        <div class="order-form__row">
+                            <div class="order-form__field">
+                                <label class="order-form__label" for="order-email">E-mail <span class="order-form__required" aria-hidden="true">*</span></label>
+                                <input
+                                    class="order-form__input"
+                                    id="order-email"
+                                    name="email"
+                                    type="email"
+                                    placeholder="example@mail.ru"
+                                    autocomplete="email"
+                                    required
+                                >
+                            </div>
+
+                            <div class="order-form__field">
+                                <label class="order-form__label" for="order-phone">Телефон <span class="order-form__required" aria-hidden="true">*</span></label>
+                                <input
+                                    class="order-form__input"
+                                    id="order-phone"
+                                    name="phone"
+                                    type="tel"
+                                    inputmode="tel"
+                                    placeholder="+7 (900) 000-00-00"
+                                    pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$"
+                                    autocomplete="tel"
+                                    aria-describedby="order-phone-hint"
+                                    required
+                                >
+                                <small class="order-form__hint" id="order-phone-hint">Формат: +7 (900) 000-00-00</small>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="order-form__group">
+                        <legend class="order-form__legend">Заказ</legend>
+
+                        <div class="order-form__row">
+                            <div class="order-form__field">
+                                <label class="order-form__label" for="order-product">Товар <span class="order-form__required" aria-hidden="true">*</span></label>
+                                <select class="order-form__select" id="order-product" name="product" required>
+                                    <option value="">Выберите товар</option>
+                                    <optgroup label="Клавиатуры">
+                                        <option value="klac-60">Клац 60, 5 490 ₽</option>
+                                        <option value="klac-65-wood">Клац 65 Wood, 12 990 ₽</option>
+                                        <option value="klac-tkl-graphite">Клац TKL Graphite, 7 990 ₽</option>
+                                        <option value="klac-tkl-retro">Клац TKL Retro, 8 490 ₽</option>
+                                    </optgroup>
+                                    <optgroup label="Свитчи и кейкапы">
+                                        <option value="switches-mx-green">Свитчи Cherry MX Green, 1 190 ₽</option>
+                                        <option value="switch-tester">Тестер свитчей, 790 ₽</option>
+                                        <option value="keycaps-orange">Кейкапы Orange, 2 990 ₽</option>
+                                        <option value="keycaps-camp">Кейкапы Кемпинг, 4 490 ₽</option>
+                                    </optgroup>
+                                    <optgroup label="Аксессуары">
+                                        <option value="keycap-puller">Съёмник кейкапов, 390 ₽</option>
+                                        <option value="cable-coiled" disabled>Витой кабель USB-C, нет в наличии</option>
+                                    </optgroup>
+                                    <option value="consultation">Нужна консультация</option>
+                                </select>
+                            </div>
+
+                            <div class="order-form__field">
+                                <label class="order-form__label" for="order-quantity">Количество <span class="order-form__required" aria-hidden="true">*</span></label>
+                                <input
+                                    class="order-form__input"
+                                    id="order-quantity"
+                                    name="quantity"
+                                    type="number"
+                                    min="1"
+                                    max="10"
+                                    value="1"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <fieldset class="order-form__options">
+                            <legend class="order-form__label">Способ получения <span class="order-form__required" aria-hidden="true">*</span></legend>
+                            <label class="order-form__option"><input type="radio" name="delivery" value="pickup" required> Самовывоз</label>
+                            <label class="order-form__option"><input type="radio" name="delivery" value="courier"> Курьер по Москве</label>
+                            <label class="order-form__option"><input type="radio" name="delivery" value="point"> Пункт выдачи</label>
+                        </fieldset>
+
+                        <div class="order-form__field">
+                            <label class="order-form__label" for="order-date">Желаемая дата получения</label>
+                            <input
+                                class="order-form__input"
+                                id="order-date"
+                                name="date"
+                                type="date"
+                            >
+                        </div>
+
+                        <div class="order-form__field">
+                            <label class="order-form__label" for="order-comment">Комментарий</label>
+                            <textarea
+                                class="order-form__textarea"
+                                id="order-comment"
+                                name="comment"
+                                rows="4"
+                                placeholder="Адрес доставки, удобное время звонка или вопрос по товару"
+                            ></textarea>
+                        </div>
+                    </fieldset>
+
+                    <div class="order-form__field">
+                        <label class="order-form__checkbox">
+                            <input
+                                id="order-agreement"
+                                name="agreement"
+                                type="checkbox"
+                                required
+                            >
+                            Я согласен на обработку персональных данных <span class="order-form__required" aria-hidden="true">*</span>
+                        </label>
+                    </div>
+
+                    <div class="order-form__actions">
+                        <button class="button button--primary" type="submit">Отправить заявку</button>
+                        <button class="button button--secondary" type="reset">Очистить форму</button>
+                    </div>
+                </form>
+
+                <p class="success-message" id="success-message" hidden>
+                    Заявка отправлена! Мы перезвоним в течение 15 минут в рабочее время.
+                </p>
+            </div>
+
+            <aside class="order__aside info-box">
+                <h2 class="info-box__title">Как проходит заказ</h2>
+                <ol class="steps">
+                    <li class="steps__item">Вы оставляете заявку на сайте.</li>
+                    <li class="steps__item">Менеджер перезванивает и уточняет детали.</li>
+                    <li class="steps__item">Проверяем клавиатуру и упаковываем заказ.</li>
+                    <li class="steps__item">Отправляем курьером или в пункт выдачи.</li>
+                </ol>
+                <p class="info-box__text">Есть вопросы? Звоните: <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer" id="contacts">
+        <div class="site-footer__inner">
+            <div class="site-footer__column">
+                <a class="site-footer__logo" href="index.html">Клац</a>
+                <p class="site-footer__text">Механические клавиатуры, свитчи и кейкапы. Учебный проект по дисциплине "Фронтенд и бэкенд разработка".</p>
+            </div>
+
+            <nav class="site-footer__column" aria-label="Разделы сайта">
+                <h2 class="site-footer__title">Разделы</h2>
+                <ul class="site-footer__list">
+                    <li><a class="site-footer__link" href="index.html#advantages">Преимущества</a></li>
+                    <li><a class="site-footer__link" href="index.html#popular">Популярные товары</a></li>
+                    <li><a class="site-footer__link" href="catalog.html">Каталог</a></li>
+                    <li><a class="site-footer__link" href="order.html">Оформить заявку</a></li>
+                </ul>
+            </nav>
+
+            <nav class="site-footer__column" aria-label="Покупателям">
+                <h2 class="site-footer__title">Покупателям</h2>
+                <ul class="site-footer__list">
+                    <li><a class="site-footer__link" href="delivery.html">Доставка и оплата</a></li>
+                    <li><a class="site-footer__link" href="contacts.html#faq">Частые вопросы</a></li>
+                    <li><a class="site-footer__link" href="contacts.html">Контакты</a></li>
+                </ul>
+            </nav>
+
+            <div class="site-footer__column">
+                <h2 class="site-footer__title">Контакты</h2>
+                <ul class="site-footer__list">
+                    <li><a class="site-footer__link" href="tel:+79991234567">+7 (999) 123-45-67</a></li>
+                    <li><a class="site-footer__link" href="mailto:info@klac.example">info@klac.example</a></li>
+                    <li>Москва, ул. Примерная, 10</li>
+                    <li>Ежедневно с 10:00 до 20:00</li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="site-footer__copy">&copy; 2026 Клац. Климашевский Даниил, ЭФБО-07-25.</p>
+    </footer>
+
+    <a class="to-top" href="#top">Наверх</a>
+</body>
+</html>

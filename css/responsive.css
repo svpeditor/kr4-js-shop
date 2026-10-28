@@ -1,0 +1,315 @@
+/*
+Адаптивные стили для контрольной работы №3.
+Подход: Mobile First.
+Базовые стили рассчитаны на мобильный экран.
+Расширения добавляются через min-width медиазапросы.
+*/
+
+/*
+Точки перелома выбраны там, где содержимому становится тесно
+или наоборот появляется место, а не под конкретные модели телефонов:
+
+600px  - карточки товаров, преимущества и подвал в две колонки,
+         таблица комплектаций снова обычная таблица;
+768px  - фото товара рядом с описанием, поля формы по два в строке,
+         контакты и способы оплаты в три колонки;
+900px  - приветственный блок в две колонки, отзывы в три;
+1024px - меню в одну строку вместо кнопки "Меню", карточки в 3-4 колонки,
+         боковые блоки на страницах товара и заявки встают справа;
+1200px - фильтры каталога слева от товаров и прилипают при прокрутке.
+
+Проверенные ширины: 360px, 430px, 768px, 1024px, 1440px.
+*/
+
+/* ===============================
+Базовый каркас
+=============================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/*
+Картинки и видео не выходят за пределы своего блока.
+height: auto сохраняет пропорции.
+*/
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/*
+Временная защита от горизонтального скролла. Сами причины
+(широкие таблицы, фиксированные ширины) исправлены в раскладке.
+*/
+body {
+    overflow-x: hidden;
+}
+
+/* ===============================
+600px: крупные телефоны в горизонтальном положении и небольшие планшеты
+=============================== */
+
+@media (min-width: 600px) {
+    .products-grid,
+    .advantages,
+    .site-footer__inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /*
+    Места хватает, поэтому таблица комплектаций
+    снова показывается обычной таблицей.
+    */
+    .info-table--cards {
+        display: table;
+    }
+
+    .info-table--cards thead {
+        position: static;
+        display: table-header-group;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+
+    .info-table--cards tbody {
+        display: table-row-group;
+    }
+
+    .info-table--cards .info-table__caption {
+        display: table-caption;
+    }
+
+    .info-table--cards .info-table__row {
+        display: table-row;
+        margin: 0;
+        border: none;
+    }
+
+    .info-table--cards .info-table__name,
+    .info-table--cards .info-table__cell {
+        display: table-cell;
+    }
+
+    .info-table--cards .info-table__name {
+        width: 40%;
+        background-color: transparent;
+    }
+
+    .info-table--cards .info-table__cell {
+        width: auto;
+    }
+
+    .info-table--cards .info-table__row .info-table__cell:last-child {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .info-table--cards .info-table__cell::before {
+        content: none;
+    }
+}
+
+/* ===============================
+768px: планшет
+=============================== */
+
+@media (min-width: 768px) {
+    main {
+        padding: var(--space-lg);
+    }
+
+    .hero {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    /*
+    Кнопка рядом с текстом, а не под ним.
+    */
+    .promo {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /*
+    Фото товара слева, описание справа.
+    */
+    .product {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-xl);
+    }
+
+    /*
+    Поля формы по два в строке (e-mail и телефон, товар и количество).
+    */
+    .order-form__row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .order__form,
+    .feedback__form {
+        padding: var(--space-lg);
+    }
+
+    .contacts,
+    .payment {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .site-footer__inner {
+        padding: var(--space-lg) 20px;
+    }
+
+    .site-footer__copy {
+        padding: 12px 20px 20px;
+    }
+
+    .to-top {
+        right: var(--space-xl);
+        bottom: var(--space-xl);
+    }
+}
+
+/* ===============================
+900px: небольшой ноутбук
+=============================== */
+
+@media (min-width: 900px) {
+    /*
+    Текст слева, фото справа. Ширина колонки с фото
+    от 320px до 440px, текст занимает остальное место.
+    */
+    .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+    }
+
+    .reviews {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ===============================
+1024px: компьютер
+=============================== */
+
+@media (min-width: 1024px) {
+    /*
+    Все 7 пунктов меню помещаются в одну строку с логотипом,
+    поэтому кнопка "Меню" больше не нужна.
+    */
+    .site-header__inner {
+        flex-wrap: nowrap;
+        gap: var(--space-lg);
+        padding: var(--space-xs) 20px;
+    }
+
+    .site-header__toggle {
+        display: none;
+    }
+
+    .site-nav {
+        display: block;
+        flex-basis: auto;
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .site-nav__list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 6px 4px;
+    }
+
+    .site-nav__link {
+        display: inline-block;
+        padding: var(--space-sm) 12px;
+        white-space: nowrap;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /*
+    На главной 4 популярных товара, они встают в один ряд.
+    */
+    .products-grid--wide {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .advantages {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .site-footer__inner {
+        grid-template-columns: 2fr 1fr 1fr 1.3fr;
+    }
+
+    .product-details,
+    .order {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    /*
+    Блок "Как проходит заказ" прилипает под шапкой, пока заполняется форма.
+    */
+    .order__aside {
+        position: sticky;
+        top: calc(var(--header-height) + var(--space-md));
+    }
+}
+
+/* ===============================
+1200px: широкий экран
+=============================== */
+
+@media (min-width: 1200px) {
+    /*
+    Фильтры слева шириной 260px, товары занимают остальное место.
+    */
+    .catalog-layout {
+        grid-template-columns: 260px minmax(0, 1fr);
+        grid-template-areas: "filters products";
+        align-items: start;
+    }
+
+    /*
+    Фильтры прилипают при прокрутке и остаются под шапкой.
+    */
+    .catalog-layout__filters {
+        position: sticky;
+        top: calc(var(--header-height) + var(--space-md));
+    }
+
+    /*
+    Фильтры всегда открыты, кнопка "Показать фильтры" не нужна.
+    */
+    .catalog-filters__toggle {
+        display: none;
+    }
+
+    .catalog-filters__form,
+    .catalog-filters--open .catalog-filters__form {
+        display: grid;
+        margin-top: 0;
+    }
+}
+
+/* ===============================
+Если в системе включено "Уменьшить движение",
+прокрутка к якорям идёт без анимации.
+=============================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}

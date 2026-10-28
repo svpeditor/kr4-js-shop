@@ -1,0 +1,1456 @@
+/* ===============================
+1. Переменные проекта
+=============================== */
+
+:root {
+    /* Основные цвета проекта */
+    --color-bg: #ffffff;
+    --color-text: #222222;
+    --color-muted: #666666;
+    --color-primary: #0057b8;
+    --color-primary-dark: #003f86;
+    --color-border: #dddddd;
+    --color-surface: #f7f7f7;
+    --color-surface-accent: #eef5ff;
+    --color-danger: #b00020;
+    /* Было #168a2f: белый текст на нём 4.46:1, Lighthouse считал это ошибкой.
+       #137a2a даёт 5.46:1 (нужно не меньше 4.5:1). */
+    --color-success: #137a2a;
+    --color-success-bg: #eefaf0;
+    --color-white: #ffffff;
+
+    /* Отступы */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* Скругления */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Размеры */
+    --container-width: 1100px;
+    --header-height: 64px;
+}
+
+/* ===============================
+2. Базовые стили
+Все стили в этом файле написаны для узкого экрана (Mobile First).
+Для планшета и компьютера раскладка расширяется в css/responsive.css.
+box-sizing и правило для картинок тоже перенесены в responsive.css.
+=============================== */
+
+/*
+Плавная прокрутка к якорям. При переходе оставляем место
+под закреплённую шапку, иначе заголовок раздела прячется под ней.
+*/
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + var(--space-md));
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+}
+
+main {
+    padding: var(--space-md);
+}
+
+/* ===============================
+3. Общие элементы интерфейса
+=============================== */
+
+a {
+    color: var(--color-primary);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+/*
+Видимый фокус при переходе клавишей Tab на всех интерактивных
+элементах: ссылки, кнопки, поля, раскрывающиеся вопросы, обёртка таблицы.
+Рамка 3px с отступом заметна и на синих кнопках.
+*/
+:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+/*
+Ссылка пропуска к основному содержимому. Спрятана за верхним краем
+экрана и появляется только при фокусе с клавиатуры.
+display: none не используем, иначе до неё нельзя дойти клавишей Tab.
+*/
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: var(--space-md);
+    z-index: 1000;
+    padding: var(--space-sm) 12px;
+    color: var(--color-white);
+    background-color: var(--color-text);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+    top: var(--space-md);
+    color: var(--color-white);
+}
+
+/*
+На main переходит фокус после ссылки пропуска (tabindex="-1").
+Рамку вокруг всего содержимого страницы не рисуем.
+*/
+.main:focus,
+.main:target {
+    outline: none;
+}
+
+/*
+Подсветка раздела, к которому перешли по якорной ссылке.
+*/
+:target {
+    outline: 2px dashed var(--color-primary);
+    outline-offset: 4px;
+}
+
+/*
+На шапку ведёт кнопка "Наверх". Рамку у неё не показываем,
+иначе при прокрутке под шапкой остаётся пунктир.
+*/
+.site-header:target {
+    outline: none;
+}
+
+/*
+Кнопка - отдельный блок. Цвет задаёт модификатор:
+button--primary (основная) или button--secondary (второстепенная).
+*/
+.button {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-md);
+    font: inherit;
+    text-decoration: none;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.button--primary {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+}
+
+/*
+Цвет текста указан ещё раз, иначе у ссылки-кнопки срабатывает a:hover
+и текст становится того же цвета, что и фон.
+*/
+.button--primary:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary-dark);
+}
+
+.button--secondary {
+    color: var(--color-primary);
+    background-color: var(--color-white);
+}
+
+.button--secondary:hover {
+    color: var(--color-primary-dark);
+    background-color: var(--color-surface-accent);
+}
+
+.button--small {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.button:disabled,
+.button--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/*
+У отключённой кнопки цвет при наведении не меняется.
+*/
+.button--primary:disabled:hover {
+    background-color: var(--color-primary);
+}
+
+/*
+Бейдж товара: "Хит", "Новинка", "Скидка".
+*/
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border-radius: 4px;
+}
+
+.badge--new {
+    background-color: var(--color-success);
+}
+
+.badge--sale {
+    background-color: var(--color-danger);
+}
+
+/* ===============================
+4. Шапка и навигация
+=============================== */
+
+/*
+Шапка прилипает к верху окна при прокрутке (sticky).
+z-index нужен, чтобы карточки не наезжали на неё.
+*/
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/*
+На телефоне в шапке логотип слева и кнопка "Меню" справа.
+flex-wrap нужен, чтобы открытое меню переносилось на новую строку под ними.
+*/
+.site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: var(--space-sm) var(--space-md);
+}
+
+.site-header__logo {
+    flex-shrink: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.site-header__logo:hover {
+    color: var(--color-text);
+}
+
+/*
+Кнопка "Меню" нужна только на узком экране,
+с 1024px она скрывается (см. responsive.css).
+*/
+.site-header__toggle {
+    min-height: 44px;
+    padding: var(--space-sm) var(--space-md);
+    font: inherit;
+    color: var(--color-primary);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.site-header__toggle:hover {
+    background-color: var(--color-surface-accent);
+}
+
+/*
+Меню скрыто, пока не нажата кнопка "Меню".
+Класс site-nav--open добавляется в js/main.js.
+flex-basis: 100% ставит открытое меню на всю ширину шапки.
+*/
+.site-nav {
+    display: none;
+    flex-basis: 100%;
+}
+
+.site-nav--open {
+    display: block;
+}
+
+/*
+На телефоне пункты меню идут в колонку.
+*/
+.site-nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0 0 var(--space-sm);
+    list-style: none;
+}
+
+/*
+display: block делает весь пункт кликабельным,
+padding увеличивает область нажатия пальцем.
+*/
+.site-nav__link {
+    display: block;
+    padding: 12px var(--space-md);
+    color: var(--color-primary);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+}
+
+.site-nav__link:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+}
+
+.site-nav__link--active {
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+/* ===============================
+5. Блоки главной страницы
+=============================== */
+
+/*
+Приветственный блок. На телефоне текст и фото идут друг под другом,
+с 900px встают в две колонки (см. responsive.css).
+*/
+.hero {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-xl);
+    padding: var(--space-lg) var(--space-md);
+    background-color: var(--color-surface-accent);
+    border-radius: var(--radius-lg);
+}
+
+/*
+clamp() задаёт размер заголовка: не меньше 28px на телефоне,
+дальше растёт вместе с шириной экрана, но не больше 40px.
+*/
+.hero__title {
+    margin: 0 0 var(--space-md);
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1.2;
+}
+
+.hero__text {
+    margin: 0 0 var(--space-md);
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.hero__picture {
+    display: block;
+}
+
+.hero__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+/*
+Общий блок для разделов страниц.
+*/
+.section {
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-xl);
+}
+
+/*
+flex-wrap: если заголовок длинный, ссылка "Весь каталог"
+переносится под него, а не сжимает заголовок.
+*/
+.section__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.section__title {
+    margin: 0;
+}
+
+/*
+Преимущества через Grid. На телефоне одна колонка,
+на планшете две, на компьютере четыре.
+*/
+.advantages {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.advantages__item {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.advantages__title {
+    margin: 0 0 var(--space-sm);
+    font-size: 18px;
+}
+
+.advantages__text {
+    margin: 0;
+    color: var(--color-muted);
+}
+
+.reviews {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    margin: 0;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.review__text {
+    flex-grow: 1;
+    margin: 0;
+}
+
+.review__author {
+    font-weight: bold;
+}
+
+.review__product {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--color-muted);
+}
+
+/*
+Дополнительный блок с призывом оставить заявку.
+На телефоне кнопка стоит под текстом.
+*/
+.promo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-xl);
+    padding: var(--space-md) 20px;
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+}
+
+.promo__title {
+    margin: 0 0 var(--space-xs);
+    font-size: 20px;
+}
+
+.promo__text {
+    margin: 0;
+}
+
+.promo__button {
+    flex-shrink: 0;
+}
+
+.success-message {
+    margin: 0 0 var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--color-success-bg);
+    border-left: 4px solid var(--color-success);
+}
+
+/* ===============================
+6. Карточки товаров
+=============================== */
+
+/*
+Сетка карточек через Grid. На телефоне карточки идут
+в одну колонку, количество колонок растёт в responsive.css.
+minmax(0, 1fr) не даёт длинному тексту растянуть колонку.
+*/
+.products-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+}
+
+/*
+position: relative нужен, чтобы бейдж ставился
+в угол именно этой карточки.
+*/
+.product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.product-card:hover {
+    border-color: var(--color-primary);
+}
+
+.product-card__badge {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    z-index: 1;
+}
+
+/*
+picture по умолчанию строчный элемент, делаем его блоком,
+чтобы под картинкой не было лишнего отступа.
+*/
+.product-card__picture {
+    display: block;
+}
+
+/*
+aspect-ratio держит пропорции 4:3, object-fit: cover
+заполняет блок без искажения фото.
+*/
+.product-card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.product-card__body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: 12px var(--space-md) var(--space-md);
+}
+
+.product-card__category {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+/*
+overflow-wrap: anywhere переносит длинные слова,
+чтобы они не ломали карточку на узком экране.
+*/
+.product-card__title {
+    margin: 0;
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.product-card__link {
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.product-card__link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.product-card__description {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-muted);
+    overflow-wrap: anywhere;
+}
+
+.product-card__price {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.product-card__old-price {
+    margin-left: var(--space-sm);
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--color-muted);
+}
+
+.product-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+/*
+Модификаторы карточки: товар со скидкой и товар, которого нет в наличии.
+*/
+.product-card--discount .product-card__price {
+    color: var(--color-danger);
+}
+
+.product-card--unavailable .product-card__image {
+    opacity: 0.5;
+}
+
+/* ===============================
+7. Подвал и кнопка "Наверх"
+=============================== */
+
+.site-footer {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+/*
+На телефоне колонки подвала идут друг под другом.
+*/
+.site-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+}
+
+.site-footer__logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.site-footer__logo:hover {
+    color: var(--color-text);
+}
+
+.site-footer__text {
+    margin: var(--space-sm) 0 0;
+}
+
+.site-footer__title {
+    margin: 0 0 var(--space-sm);
+    font-size: 16px;
+}
+
+.site-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer__link {
+    text-decoration: none;
+}
+
+.site-footer__link:hover {
+    text-decoration: underline;
+}
+
+/*
+Нижний отступ больше, чтобы кнопка "Наверх"
+не закрывала последнюю строку подвала.
+*/
+.site-footer__copy {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 12px var(--space-md) 72px;
+    font-size: 14px;
+    color: var(--color-muted);
+    border-top: 1px solid var(--color-border);
+}
+
+/*
+Кнопка "Наверх" закреплена в правом нижнем углу окна.
+На телефоне отступ от края меньше, высота 44px удобна для нажатия.
+*/
+.to-top {
+    position: fixed;
+    right: var(--space-md);
+    bottom: var(--space-md);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--space-sm) 12px;
+    font-size: 14px;
+    color: var(--color-white);
+    text-decoration: none;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+
+.to-top:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary-dark);
+}
+
+/* ===============================
+8. Форма заявки и модальное окно
+=============================== */
+
+/*
+Ширина окна не больше экрана минус 32px, а если форма
+не помещается по высоте, она прокручивается внутри окна.
+*/
+.order-dialog {
+    width: min(100% - 32px, 560px);
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    padding: var(--space-lg);
+    border: none;
+    border-radius: var(--radius-lg);
+}
+
+.order-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.order-dialog__title {
+    margin: 0 0 var(--space-sm);
+}
+
+.order-dialog__text {
+    margin: 0 0 var(--space-md);
+    color: var(--color-muted);
+}
+
+.order-dialog__product {
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.order-form {
+    accent-color: var(--color-primary);
+}
+
+.order-form__field {
+    margin-bottom: var(--space-md);
+}
+
+.order-form__label {
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+
+/*
+Звёздочка у обязательных полей. Для программ чтения с экрана она скрыта
+(aria-hidden), обязательность они берут из атрибута required.
+*/
+.order-form__required {
+    color: var(--color-danger);
+}
+
+.order-form__note {
+    margin: 0 0 var(--space-md);
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+/*
+min-height: 44px - поле удобно нажимать пальцем на телефоне.
+*/
+.order-form__input,
+.order-form__select,
+.order-form__textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    font: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.order-form__textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.order-form__input:hover,
+.order-form__select:hover,
+.order-form__textarea:hover {
+    border-color: var(--color-primary);
+}
+
+/*
+Подсветка ошибочных полей, aria-invalid добавляется в js/main.js.
+*/
+.order-form__input[aria-invalid="true"],
+.order-form__select[aria-invalid="true"],
+.order-form__textarea[aria-invalid="true"] {
+    border-color: var(--color-danger);
+}
+
+.order-form__hint {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.order-form__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+}
+
+.order-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.order-form__group {
+    min-width: 0;
+    margin: 0 0 20px;
+    padding: 0;
+    border: none;
+}
+
+.order-form__legend {
+    margin-bottom: 12px;
+    padding: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/*
+Строка из двух полей. На телефоне поля идут друг под другом,
+с 768px встают рядом (см. responsive.css).
+*/
+.order-form__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: var(--space-md);
+}
+
+.order-form__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    min-width: 0;
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    border: none;
+}
+
+.order-form__option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.order-form__option:hover {
+    border-color: var(--color-primary);
+}
+
+/* ===============================
+9. Внутренние страницы и каталог
+=============================== */
+
+.page-header {
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-lg);
+}
+
+.page-header__title {
+    margin: 0 0 var(--space-sm);
+}
+
+.page-header__text {
+    margin: 0;
+    color: var(--color-muted);
+}
+
+/*
+Хлебные крошки: разделитель "/" добавляется через ::after,
+текущая страница (breadcrumbs__current) не ссылка.
+*/
+.breadcrumbs {
+    max-width: var(--container-width);
+    margin: 0 auto 12px;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumbs__item:not(:last-child)::after {
+    content: "/";
+    margin-left: var(--space-sm);
+}
+
+.categories {
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-lg);
+}
+
+.categories__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.categories__link {
+    display: inline-block;
+    padding: var(--space-sm) 12px;
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.categories__link:hover {
+    background-color: var(--color-surface-accent);
+    border-color: var(--color-primary);
+}
+
+.categories__count {
+    color: var(--color-muted);
+}
+
+/*
+Каталог через Grid. На телефоне одна колонка: сначала фильтры,
+потом товары. С 1200px фильтры встают слева (см. responsive.css).
+Имена областей заданы в grid-template-areas, блоки ставятся в них через grid-area.
+*/
+.catalog-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "filters"
+        "products";
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.catalog-layout__filters {
+    grid-area: filters;
+}
+
+.catalog-layout__products {
+    grid-area: products;
+    min-width: 0;
+}
+
+.catalog-layout__section {
+    margin-bottom: var(--space-xl);
+}
+
+.catalog-layout__title {
+    margin: 0 0 12px;
+}
+
+.catalog-filters {
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    accent-color: var(--color-primary);
+}
+
+/*
+На телефоне фильтры свёрнуты, чтобы товары не уезжали вниз.
+Кнопка "Показать фильтры" добавляет класс catalog-filters--open (js/main.js).
+*/
+.catalog-filters__toggle {
+    width: 100%;
+    min-height: 44px;
+    padding: var(--space-sm) var(--space-md);
+    font: inherit;
+    color: var(--color-primary);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.catalog-filters__toggle:hover {
+    background-color: var(--color-surface-accent);
+}
+
+/*
+Форма фильтров на Grid, gap задаёт расстояние между группами полей.
+*/
+.catalog-filters__form {
+    display: none;
+    gap: var(--space-md);
+}
+
+.catalog-filters--open .catalog-filters__form {
+    display: grid;
+    margin-top: var(--space-md);
+}
+
+.catalog-filters__title {
+    margin: 0;
+    font-size: 18px;
+}
+
+.catalog-filters__group {
+    min-width: 0;
+    margin: 0;
+    padding: var(--space-sm) 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.catalog-filters__legend {
+    padding: 0 var(--space-xs);
+    font-weight: bold;
+}
+
+.catalog-filters__option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    margin-bottom: var(--space-xs);
+    cursor: pointer;
+}
+
+.catalog-filters__price {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.catalog-filters__price-label {
+    color: var(--color-muted);
+}
+
+.catalog-filters__input {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 6px;
+    font: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.catalog-filters__input:hover {
+    border-color: var(--color-primary);
+}
+
+.catalog-filters__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+/* ===============================
+10. Страница товара и таблицы
+=============================== */
+
+/*
+Карточка товара. На телефоне фото над описанием,
+с 768px фото слева, описание справа.
+*/
+.product {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-xl);
+}
+
+.product__picture {
+    display: block;
+}
+
+.product__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+.product__thumbs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.product__thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+}
+
+.product__category {
+    margin: 12px 0 var(--space-xs);
+    color: var(--color-muted);
+}
+
+.product__title {
+    margin: 0 0 12px;
+}
+
+.product__price {
+    margin: 0 0 var(--space-xs);
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.product__stock {
+    margin: 0 0 12px;
+    color: var(--color-success);
+}
+
+.product__text {
+    margin: 0 0 12px;
+}
+
+.product__features {
+    margin: 0 0 var(--space-md);
+    padding-left: 20px;
+}
+
+.product__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+/*
+Ссылки на разделы страницы товара.
+*/
+.product-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/*
+Таблицы и блок доставки. На телефоне друг под другом,
+с 1024px блок доставки справа.
+*/
+.product-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.info-box {
+    padding: var(--space-md) 20px;
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+}
+
+.info-box__title {
+    margin: 0 0 var(--space-sm);
+    font-size: 18px;
+}
+
+.info-box__list {
+    margin: 0 0 12px;
+    padding-left: 20px;
+}
+
+.info-box__text {
+    margin: 0;
+}
+
+/*
+Обёртка для таблицы. Если таблица шире экрана, она прокручивается
+внутри обёртки, а вся страница вбок не уезжает.
+*/
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*
+Таблица характеристик, комплектаций и доставки.
+*/
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/*
+Таблице доставки нужна минимальная ширина, иначе на телефоне
+три столбца сжимаются до нечитаемых. Тогда она листается в обёртке.
+*/
+.info-table--wide {
+    min-width: 520px;
+}
+
+.info-table__caption {
+    margin-bottom: var(--space-sm);
+    color: var(--color-muted);
+    text-align: left;
+}
+
+.info-table__head {
+    padding: 10px 12px;
+    text-align: left;
+    background-color: var(--color-surface-accent);
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.info-table__name,
+.info-table__cell {
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.info-table__name {
+    width: 40%;
+}
+
+.info-table__row:hover {
+    background-color: var(--color-surface);
+}
+
+/*
+Таблица комплектаций на телефоне показывается карточками:
+каждая строка становится отдельным блоком, а название столбца
+берётся из атрибута data-label у ячейки.
+С 600px это снова обычная таблица (см. responsive.css).
+*/
+.info-table--cards,
+.info-table--cards tbody,
+.info-table--cards .info-table__caption,
+.info-table--cards .info-table__row,
+.info-table--cards .info-table__name,
+.info-table--cards .info-table__cell {
+    display: block;
+    width: 100%;
+}
+
+/*
+Строку заголовков прячем только визуально,
+программа чтения с экрана её всё равно прочитает.
+*/
+.info-table--cards thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.info-table--cards .info-table__row {
+    margin-bottom: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.info-table--cards .info-table__name {
+    background-color: var(--color-surface-accent);
+}
+
+.info-table--cards .info-table__cell {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.info-table--cards .info-table__row .info-table__cell:last-child {
+    border-bottom: none;
+}
+
+.info-table--cards .info-table__cell::before {
+    content: attr(data-label);
+    color: var(--color-muted);
+}
+
+/* ===============================
+11. Страница заявки
+=============================== */
+
+/*
+На телефоне форма и блок "Как проходит заказ" друг под другом,
+с 1024px блок встаёт справа от формы.
+*/
+.order {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.order__form {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.steps {
+    margin: 0 0 12px;
+    padding-left: 20px;
+}
+
+.steps__item {
+    margin-bottom: 6px;
+}
+
+/* ===============================
+12. Контакты и доставка
+=============================== */
+
+.contacts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    max-width: var(--container-width);
+    margin: 0 auto var(--space-xl);
+}
+
+.contacts__card {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.contacts__title {
+    margin: 0 0 var(--space-sm);
+    font-size: 18px;
+}
+
+.contacts__text {
+    margin: 0 0 6px;
+}
+
+/*
+Форма обратной связи на странице контактов. Использует те же
+элементы, что и форма заявки (order-form), ширина ограничена,
+чтобы строки полей не были слишком длинными на большом экране.
+*/
+.feedback__text {
+    margin: 0 0 var(--space-md);
+}
+
+.feedback__form {
+    max-width: 720px;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.faq__item {
+    margin-bottom: var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.faq__item[open] {
+    border-color: var(--color-primary);
+}
+
+.faq__question {
+    padding: 12px var(--space-md);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.faq__question:hover {
+    color: var(--color-primary);
+}
+
+.faq__answer {
+    margin: 0;
+    padding: 0 var(--space-md) 12px;
+}
+
+.payment {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.payment__item {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.payment__title {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.payment__text {
+    margin: 0;
+    color: var(--color-muted);
+}

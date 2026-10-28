@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/data.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/validation.js" defer></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к основному содержимому</a>
@@ -69,6 +70,7 @@
                                 autocomplete="name"
                                 required
                             >
+                            <p class="form-error" id="order-name-error"></p>
                         </div>
 
                         <div class="order-form__row">
@@ -83,6 +85,7 @@
                                     autocomplete="email"
                                     required
                                 >
+                                <p class="form-error" id="order-email-error"></p>
                             </div>
 
                             <div class="order-form__field">
@@ -100,6 +103,7 @@
                                     required
                                 >
                                 <small class="order-form__hint" id="order-phone-hint">Формат: +7 (900) 000-00-00</small>
+                                <p class="form-error" id="order-phone-error"></p>
                             </div>
                         </div>
                     </fieldset>
@@ -192,11 +196,9 @@
                         <button class="button button--primary" type="submit">Отправить заявку</button>
                         <button class="button button--secondary" type="reset">Очистить форму</button>
                     </div>
-                </form>
 
-                <p class="success-message" id="success-message" hidden>
-                    Заявка отправлена! Мы перезвоним в течение 15 минут в рабочее время.
-                </p>
+                    <p class="form-message" aria-live="polite"></p>
+                </form>
             </div>
 
             <aside class="order__aside info-box">

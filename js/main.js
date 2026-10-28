@@ -1,8 +1,7 @@
-// Проверка подключения. Объект product создан в data.js,
+// Проверка подключения. Массив products создан в data.js,
 // поэтому data.js подключается на страницах раньше main.js.
 console.log('Файл main.js подключён');
-console.log(product);
-console.table(product);
+console.table(products);
 
 // Цена в виде строки, например "9400 ₽".
 function formatPrice(price) {
@@ -35,35 +34,134 @@ function createProductSummary(product) {
     return `${product.title}: ${formatPrice(finalPrice)}. Статус: ${status}.`;
 }
 
-console.log(formatPrice(product.price));
+// Массив названий товаров.
+function getProductTitles(products) {
+    return products.map((product) => product.title);
+}
 
-const discountValue = calculateDiscount(product.price, product.discountPercent);
-console.log(discountValue);
+// Только товары в наличии.
+function getAvailableProducts(products) {
+    return products.filter((product) => product.isAvailable);
+}
 
-const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
-console.log(finalPrice);
+// Поиск по названию без учёта регистра и пробелов по краям.
+function searchProducts(products, query) {
+    const normalizedQuery = query.trim().toLowerCase();
 
-console.log(getProductStatus(product));
+    if (normalizedQuery === '') {
+        return products;
+    }
 
-// Операторы сравнения и логические операторы.
-const hasDiscount = product.discountPercent > 0;
-const canBuy = product.price > 0 && product.isAvailable;
-console.log(`Есть скидка: ${hasDiscount}, можно купить: ${canBuy}`);
+    return products.filter((product) => {
+        return product.title.toLowerCase().includes(normalizedQuery);
+    });
+}
 
-const productSummary = createProductSummary(product);
-console.log(productSummary);
+// Фильтр по категории, 'all' - все товары.
+function filterProductsByCategory(products, category) {
+    if (category === 'all') {
+        return products;
+    }
 
-// Вывод на страницу. Блок "Проверка JavaScript" есть только на главной,
-// поэтому перед записью проверяем, что элемент найден.
+    return products.filter((product) => {
+        return product.category === category;
+    });
+}
+
+// Сортировка по цене. Сортируем копию, исходный массив не меняется.
+function sortProductsByPrice(products, direction = 'asc') {
+    const productsCopy = [...products];
+
+    if (direction === 'desc') {
+        return productsCopy.sort((a, b) => b.price - a.price);
+    }
+
+    return productsCopy.sort((a, b) => a.price - b.price);
+}
+
+function findProductById(products, id) {
+    return products.find((product) => product.id === id);
+}
+
+// Сумма цен всех товаров через reduce.
+function calculateTotalPrice(products) {
+    return products.reduce((sum, product) => {
+        return sum + product.price;
+    }, 0);
+}
+
+function countAvailableProducts(products) {
+    return products.filter((product) => product.isAvailable).length;
+}
+
+function calculateAveragePrice(products) {
+    if (products.length === 0) {
+        return 0;
+    }
+
+    const totalPrice = calculateTotalPrice(products);
+    return Math.round(totalPrice / products.length);
+}
+
+// Поиск, фильтр и сортировка вместе, как будет в каталоге.
+function getPreparedProducts(products, query, category, sortDirection) {
+    let result = [...products];
+    result = searchProducts(result, query);
+    result = filterProductsByCategory(result, category);
+    result = sortProductsByPrice(result, sortDirection);
+    return result;
+}
+
+// Перебор массива циклом for по индексам и циклом for...of.
+for (let i = 0; i < products.length; i += 1) {
+    console.log(`${i + 1}. ${products[i].title}`);
+}
+
+for (const product of products) {
+    if (product.isAvailable) {
+        console.log(`${product.title} - в наличии`);
+    } else {
+        console.log(`${product.title} - нет в наличии`);
+    }
+}
+
+console.log(getProductTitles(products));
+console.table(getAvailableProducts(products));
+console.table(searchProducts(products, 'кла'));
+console.table(filterProductsByCategory(products, 'keyboards'));
+console.table(sortProductsByPrice(products, 'asc'));
+console.table(sortProductsByPrice(products, 'desc'));
+
+const selectedProduct = findProductById(products, 3);
+
+if (selectedProduct) {
+    console.log(`Найден товар: ${selectedProduct.title}`);
+    console.log(createProductSummary(selectedProduct));
+} else {
+    console.log('Товар не найден');
+}
+
+console.log(calculateTotalPrice(products));
+console.log(countAvailableProducts(products));
+console.log(calculateAveragePrice(products));
+console.table(getPreparedProducts(products, 'кла', 'keyboards', 'asc'));
+
+// Краткая статистика на странице. Блок "Проверка JavaScript" есть только
+// на главной, поэтому перед записью проверяем, что элемент найден.
 const messageElement = document.querySelector('.js-message');
 const productOutputElement = document.querySelector('.product-output');
 
 if (messageElement) {
-    messageElement.textContent = 'JavaScript подключён корректно.';
+    messageElement.textContent = 'Массив товаров и функции обработки данных подключены.';
 }
 
 if (productOutputElement) {
-    productOutputElement.textContent = productSummary;
+    productOutputElement.textContent = [
+        `Всего товаров: ${products.length}`,
+        `Товаров в наличии: ${countAvailableProducts(products)}`,
+        `Средняя цена: ${calculateAveragePrice(products)} ₽`,
+        `Результатов поиска "кла": ${searchProducts(products, 'кла').length}`
+    ].join('\n');
 }
 
 // Кнопка "Меню" в шапке. На телефоне и планшете пункты меню скрыты,

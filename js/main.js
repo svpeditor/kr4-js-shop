@@ -80,6 +80,44 @@ const productOutputElement = document.querySelector('.product-output');
 
 if (messageElement && productOutputElement) {
     console.log('Файл main.js подключён');
+
+    // Практика 15: один товар, типы данных, операторы и функции.
+    // Отдельного объекта product больше нет, берём товар с id 3 из массива products.
+    const product = findProductById(products, 3);
+
+    console.log(product);
+    console.table(product);
+
+    // Типы данных свойств товара: строка, число, логическое значение и сам объект.
+    console.log(typeof product.title, typeof product.price, typeof product.isAvailable, typeof product);
+
+    console.log(formatPrice(product.price));
+
+    const discountValue = calculateDiscount(product.price, product.discountPercent);
+    console.log(discountValue);
+
+    const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
+    console.log(finalPrice);
+
+    console.log(getProductStatus(product));
+
+    // Арифметические операторы: сколько сэкономит покупатель и цена за две штуки.
+    const savedMoney = product.price - finalPrice;
+    const twoItemsPrice = finalPrice * 2;
+    console.log(`Экономия: ${formatPrice(savedMoney)}, за 2 шт.: ${formatPrice(twoItemsPrice)}`);
+
+    // Операторы сравнения и логические операторы.
+    const hasDiscount = product.discountPercent > 0;
+    const canBuy = product.price > 0 && product.isAvailable;
+    const isExpensive = finalPrice >= 10000;
+    const needAttention = !product.isAvailable || product.rating < 4;
+    console.log(`Есть скидка: ${hasDiscount}, можно купить: ${canBuy}`);
+    console.log(`Дороже 10 000 ₽: ${isExpensive}, нужно проверить товар: ${needAttention}`);
+
+    const productSummary = createProductSummary(product);
+    console.log(productSummary);
+
+    // Практика 16: массив товаров.
     console.table(products);
 
     // Перебор массива циклом for по индексам: сколько товаров со скидкой.
@@ -122,6 +160,7 @@ if (messageElement && productOutputElement) {
 
     messageElement.textContent = 'Массив товаров и функции обработки данных подключены.';
     productOutputElement.textContent = [
+        productSummary,
         `Всего товаров: ${products.length}`,
         `Товаров в наличии: ${countAvailableProducts(products)}`,
         `Средняя цена: ${formatPrice(calculateAveragePrice(products))}`
